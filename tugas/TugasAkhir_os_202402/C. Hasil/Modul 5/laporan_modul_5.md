@@ -61,10 +61,7 @@ Access denied or error.
 ```
 Hasil Screenshoot:
 
-```
 <img width="1220" height="791" alt="modul5A" src="https://github.com/user-attachments/assets/21d31ad0-6e0c-48b0-b308-5be8e3783933" />
-
-```
 
 ### 📍 Output jika dijalankan sebagai PID = 1 (init):
 
@@ -77,10 +74,7 @@ Hasil Screenshoot:
 ```
 Hasil Screenshoot:
 
-```
 <img width="878" height="952" alt="modul5B" src="https://github.com/user-attachments/assets/da76ffa1-541e-40a6-be9d-f3a879757e6f" />
-
-```
 
 ## ⚠️ Kendala yang Dihadapi
 
