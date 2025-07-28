@@ -25,7 +25,6 @@ getreadcount()
 → Mengembalikan total jumlah pemanggilan fungsi read() sejak sistem boot.
 
 Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan system call, serta mengakses dan memanipulasi informasi proses di tingkat kernel. Selain itu, mahasiswa juga diminta membuat program uji pada level user untuk menguji kedua system call yang telah dibuat.
----
 
 ## 🛠️ Rincian Implementasi
 
