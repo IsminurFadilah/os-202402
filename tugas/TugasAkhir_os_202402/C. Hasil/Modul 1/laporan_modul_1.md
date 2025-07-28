@@ -1,11 +1,15 @@
 # 📝 Laporan Tugas Akhir
 
 **Mata Kuliah**: Sistem Operasi
+
 **Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Ismi Nur Fadilah>`
-**NIM**: `<240202868>`
+
+**Nama**: Ismi Nur Fadilah
+
+**NIM**: 240202868
+
 **Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+`( Modul 1 – System Call dan Instrumentasi Kernel)`
 
 ---
 
