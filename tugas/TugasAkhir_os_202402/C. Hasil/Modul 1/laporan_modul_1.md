@@ -16,14 +16,14 @@ Modul 1 – System Call dan Instrumentasi Kernel
 ## 📌 Deskripsi Singkat Tugas
 
 * **Modul 1 – System Call dan Instrumentasi Kernel**:
-* 
+  
   Pada Modul 1 ini, diminta untuk memodifikasi kernel xv6-public dengan menambahkan dua buah system call baru, yaitu:
 
-getpinfo(struct pinfo *ptable)
-→ Mengembalikan informasi proses yang sedang aktif, termasuk PID, ukuran memori, dan nama proses.
+  * getpinfo(struct pinfo *ptable)
+    → Mengembalikan informasi proses yang sedang aktif, termasuk PID, ukuran memori, dan nama proses.
 
-getreadcount()
-→ Mengembalikan total jumlah pemanggilan fungsi read() sejak sistem boot.
+  * getreadcount()
+    → Mengembalikan total jumlah pemanggilan fungsi read() sejak sistem boot.
 
 Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan system call, serta mengakses dan memanipulasi informasi proses di tingkat kernel. Selain itu, mahasiswa juga diminta membuat program uji pada level user untuk menguji kedua system call yang telah dibuat.
 
@@ -62,12 +62,9 @@ Output modul 1
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
-
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
-
+* Perlu memastikan struktur pinfo di file user (ptest.c) sama persis dengan yang didefinisikan di kernel (proc.h), agar data tidak korup saat dikembalikan dari      syscall.
+* Pada versi xv6-public, ptable_lock mungkin tidak didefinisikan, sehingga perlu menggunakan ptable.lock atau mengimplementasikan spinlock baru.
+* Salah menaruh  readcount++ di awal fungsi sys_read()
 ---
 
 ## 📚 Referensi
