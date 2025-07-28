@@ -67,9 +67,10 @@ Hasil Screenshoot:
 
 ```
 === Audit Log ===  
-[0] PID=1 SYSCALL=5 TICK=12  
-[1] PID=1 SYSCALL=6 TICK=13  
-[2] PID=1 SYSCALL=1 TICK=14  
+[0] PID=1 SYSCALL=7 TICK=7 
+[1] PID=1 SYSCALL=15 TICK=19  
+[2] PID=1 SYSCALL=17 TICK=22
+...  
 
 ```
 Hasil Screenshoot:
