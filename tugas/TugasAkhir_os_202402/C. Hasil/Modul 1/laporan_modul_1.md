@@ -8,8 +8,7 @@
 
 **NIM**: 240202868
 
-**Modul yang Dikerjakan**:
-Modul 1 – System Call dan Instrumentasi Kernel
+**Modul yang Dikerjakan**: Modul 1 – System Call dan Instrumentasi Kernel
 
 ---
 
@@ -19,25 +18,25 @@ Modul 1 – System Call dan Instrumentasi Kernel
   
   Pada Modul 1 ini, diminta untuk memodifikasi kernel xv6-public dengan menambahkan dua buah system call baru, yaitu:
 
-  * getpinfo(struct pinfo *ptable)
+  * `getpinfo(struct pinfo *ptable)`
     → Mengembalikan informasi proses yang sedang aktif, termasuk PID, ukuran memori, dan nama proses.
 
-  * getreadcount()
-    → Mengembalikan total jumlah pemanggilan fungsi read() sejak sistem boot.
+  * `getreadcount()`
+    → Mengembalikan total jumlah pemanggilan fungsi `read()` sejak sistem boot.
 
-Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan system call, serta mengakses dan memanipulasi informasi proses di tingkat kernel. Selain itu, mahasiswa juga diminta membuat program uji pada level user untuk menguji kedua system call yang telah dibuat.
+Tugas ini melatih pemahaman dalam memodifikasi kernel, menambahkan system call, serta mengakses dan memanipulasi informasi proses di tingkat kernel. Selain itu, juga membuat program uji pada level user untuk menguji kedua system call yang telah dibuat.
 
 ## 🛠️ Rincian Implementasi
 
-* Menambahkan dua system call baru (getpinfo dan getreadcount) di file sysproc.c dan mendaftarkannya di syscall.c
+* Menambahkan dua system call baru `(getpinfo dan getreadcount)` di file `sysproc.c` dan mendaftarkannya di `syscall.c`
 
-* Menambahkan nomor syscall di syscall.h, serta deklarasinya di user.h dan usys.S
+* Menambahkan nomor syscall di `syscall.h`, serta deklarasinya di `user.h` dan `usys.S`
 
-* Membuat struktur struct pinfo di proc.h untuk menyimpan info proses aktif
+* Membuat struktur struct pinfo di `proc.h` untuk menyimpan info proses aktif
 
-* Menambahkan variabel global readcount di sysproc.c dan menginkrementasinya di fungsi sys_read() (sysfile.c)
+* Menambahkan variabel global `readcount` di `sysproc.c` dan menginkrementasinya di fungsi `sys_read()` `(sysfile.c)`
 
-* Membuat dua program uji user-level: ptest.c untuk getpinfo dan rtest.c untuk getreadcount
+* Membuat dua program uji user-level: `ptest.c` untuk `getpinfo` dan `rtest.c` untuk `getreadcount`
 
 ---
 
@@ -45,26 +44,45 @@ Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan sys
 
 Program uji yang digunakan pada Modul 1:
 
-* ptest → untuk menguji system call getpinfo(), menampilkan daftar proses aktif beserta PID, ukuran memori, dan nama proses.
+* `ptest` → untuk menguji system call `getpinfo()`, menampilkan daftar proses aktif beserta PID, ukuran memori, dan nama proses.
 
-* rtest → untuk menguji system call getreadcount(), memastikan jumlah pemanggilan read() bertambah setelah melakukan input dari stdin.
+* `rtest` → untuk menguji system call `getreadcount()`, memastikan jumlah pemanggilan `read()` bertambah setelah melakukan input dari stdin.
 
 ---
 
 ## 📷 Hasil Uji
 
-Output modul 1
+## Output ptest:
+```
+$ ptest
+PID	MEM	NAME
+1	12288 init
+2	16384	sh
+3	12288	ptest
+
+```
+
+## Output rtest:
+```
+$ rtest
+Read Count Sebelum: 12
+hello
+Read Count Setelah: 13
+```
+
+Screenshoot Output modul 1:
 
 <img width="831" height="541" alt="modul1" src="https://github.com/user-attachments/assets/a03466ba-aa16-4b2c-9c62-b6e0261f3ee0" />
-
 
 ---
 
 ## ⚠️ Kendala yang Dihadapi
 
-* Perlu memastikan struktur pinfo di file user (ptest.c) sama persis dengan yang didefinisikan di kernel (proc.h), agar data tidak korup saat dikembalikan dari      syscall.
-* Pada versi xv6-public, ptable_lock mungkin tidak didefinisikan, sehingga perlu menggunakan ptable.lock atau mengimplementasikan spinlock baru.
-* Salah menaruh  readcount++ di awal fungsi sys_read()
+* Perlu memastikan struktur pinfo di file user `(ptest.c)` sama persis dengan yang didefinisikan di kernel `(proc.h)`, agar data tidak korup saat dikembalikan dari `syscall`.
+  
+* Pada versi xv6-public, ptable_lock mungkin tidak didefinisikan, sehingga perlu menggunakan `ptable.lock` atau mengimplementasikan `spinlock` baru.
+  
+* Salah menaruh  `readcount++` di awal fungsi `sys_read()`
 ---
 
 ## 📚 Referensi
