@@ -14,12 +14,12 @@
 
 ## 📌 Deskripsi Singkat Tugas
 
-## Pada modul ini dilakukan dua modifikasi besar terhadap kernel xv6, yaitu:
+  Pada modul ini dilakukan dua modifikasi besar terhadap kernel xv6, yaitu:
 
 * Menambahkan `system call` `chmod(path, mode)` untuk mengatur mode file menjadi read-only atau read-write.
 
 * Menambahkan driver pseudo-device `/dev/random` yang menyediakan byte acak ketika dibaca.
-* 
+  
 ---
 
 ## 🛠️ Rincian Implementasi
