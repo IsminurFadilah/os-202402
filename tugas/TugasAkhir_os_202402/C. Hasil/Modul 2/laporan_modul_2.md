@@ -51,12 +51,15 @@ Program uji yang digunakan:
 ## 📷 Hasil Uji
 Hasil Uji ptest:
 
+```
+
 $ ptest
 Child 1 selesai
 Child 2 selesai
 Parent selesai
 $
 
+```
 
 <img width="829" height="592" alt="modul2" src="https://github.com/user-attachments/assets/381d931d-eaa4-4b41-9e91-6b6814b456ba" />
 
