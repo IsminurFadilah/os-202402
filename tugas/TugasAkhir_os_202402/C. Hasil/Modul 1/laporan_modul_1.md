@@ -72,13 +72,13 @@ Read Count Setelah: 13
 
 Screenshoot Output modul 1:
 
-<img width="831" height="541" alt="modul1" src="https://github.com/user-attachments/assets/a03466ba-aa16-4b2c-9c62-b6e0261f3ee0" />
+<img width="946" height="534" alt="modul1_" src="https://github.com/user-attachments/assets/35c2a55c-e608-44fd-9192-2dba5be7e3c3" />
 
 ---
 
 ## ⚠️ Kendala yang Dihadapi
 
-* Perlu memastikan struktur pinfo di file user `(ptest.c)` sama persis dengan yang didefinisikan di kernel `(proc.h)`, agar data tidak korup saat dikembalikan dari `syscall`.
+* Perlu memastikan struktur pinfo di file user `(ptest.c)` sama persis dengan yang didefinisikan di kernel `(proc.h)`, agar data tidak korup saat dikembalikan       dari `syscall`.
   
 * Pada versi xv6-public, ptable_lock mungkin tidak didefinisikan, sehingga perlu menggunakan `ptable.lock` atau mengimplementasikan `spinlock` baru.
   
