@@ -14,27 +14,27 @@
 
 ## 📌 Deskripsi Singkat Tugas
 
-Modul ini berfokus pada modifikasi algoritma penjadwalan CPU pada kernel xv6. Penjadwal default Round Robin diganti dengan Priority Scheduling (Non-Preemptive). Mahasiswa menambahkan atribut prioritas pada proses dan mengimplementasikan system call set_priority(int priority) yang memungkinkan proses mengatur prioritasnya. Proses dengan prioritas tertinggi (angka lebih kecil) dipilih lebih dulu oleh scheduler.
+Mengubah algoritma penjadwalan bawaan xv6 dari Round Robin menjadi Non-Preemptive Priority Scheduling, di mana proses dengan prioritas numerik lebih kecil akan dipilih untuk dijalankan terlebih dahulu. Selain itu, ditambahkan system call `set_priority(int)` agar proses dapat mengatur prioritasnya sendiri.
 
 ---
 
 ## 🛠️ Rincian Implementasi
 
-  * Menambahkan field int priority ke dalam struktur proc di proc.h
+  * Menambahkan field int priority ke dalam struktur proc di `proc.h`
 
-  * Menginisialisasi priority dengan nilai default (misal 60) di allocproc() (proc.c)
+  * Menginisialisasi priority dengan nilai default `(misal 60)` di `allocproc()` `(proc.c)`
 
-  * Menambahkan system call set_priority():
+  * Menambahkan system call `set_priority()`:
 
-      * Tambah deklarasi di user.h dan syscall.h
+      * Tambah deklarasi di `user.h` dan `syscall.h`
 
-      * Tambah entri syscall di usys.S dan syscall.c
+      * Tambah entri syscall di `usys.S` dan `syscall.c`
 
-      * Implementasi fungsi sys_set_priority() di sysproc.c
+      * Implementasi fungsi `sys_set_priority()` di `sysproc.c`
 
-  * Memodifikasi fungsi scheduler() di proc.c agar memilih proses RUNNABLE dengan prioritas tertinggi
+  * Memodifikasi fungsi `scheduler()` di `proc.c` agar memilih proses `RUNNABLE` dengan prioritas tertinggi
 
-  * Menyusun program uji user-level (prio_test.c) untuk menunjukkan bahwa proses dengan prioritas lebih tinggi dijalankan lebih awal
+  * Menyusun program uji user-level `(prio_test.c)` untuk menunjukkan bahwa proses dengan prioritas lebih tinggi dijalankan lebih awal
 
 ---
 
@@ -42,7 +42,7 @@ Modul ini berfokus pada modifikasi algoritma penjadwalan CPU pada kernel xv6. Pe
 
 Program uji yang digunakan:
 
-  * prio_test: menguji set_priority() dan membuktikan bahwa proses dengan prioritas lebih tinggi dieksekusi terlebih dahulu
+  * `prio_test`: menguji `set_priority()` dan membuktikan bahwa proses dengan prioritas lebih tinggi dieksekusi terlebih dahulu
 
 ---
 
@@ -58,6 +58,7 @@ Parent selesai
 $
 
 ```
+Screenshoot Output Modul 2:
 
 <img width="829" height="592" alt="modul2" src="https://github.com/user-attachments/assets/381d931d-eaa4-4b41-9e91-6b6814b456ba" />
 
@@ -67,13 +68,13 @@ $
 
 Tuliskan kendala (jika ada), misalnya:
 
-  * Salah dalam memodifikasi scheduler() menyebabkan kernel tidak menjadwalkan proses apapun (infinite loop)
+  * Salah dalam memodifikasi `scheduler()` menyebabkan kernel tidak menjadwalkan proses apapun (infinite loop)
 
-  * Lupa menambahkan validasi nilai prioritas pada system call set_priority() (harus 0–100)
+  * Lupa menambahkan validasi nilai prioritas pada system call `set_priority()` (harus 0–100)
 
-  * set_priority() bekerja tetapi tidak berdampak karena prioritas tidak digunakan dalam scheduler() secara benar
+  * `set_priority()` bekerja tetapi tidak berdampak karena prioritas tidak digunakan dalam `scheduler()` secara benar
 
-  * Kesulitan membedakan kapan proses dianggap RUNNABLE atau sedang menunggu, menyebabkan pemilihan proses tidak akurat
+  * Kesulitan membedakan kapan proses dianggap `RUNNABLE` atau sedang menunggu, menyebabkan pemilihan proses tidak akurat
 
 ---
 
