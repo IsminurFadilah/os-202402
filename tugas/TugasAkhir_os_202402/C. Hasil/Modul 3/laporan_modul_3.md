@@ -1,45 +1,59 @@
 # 📝 Laporan Tugas Akhir
 
 **Mata Kuliah**: Sistem Operasi
+
 **Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Nama Lengkap>`
-**NIM**: `<Nomor Induk Mahasiswa>`
-**Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+
+**Nama**: Ismi Nur Fadilah
+
+**NIM**: 240202868
+
+**Modul yang Dikerjakan**: Modul 3 – Manajemen Memori Tingkat Lanjut (Copy-on-Write dan Shared Memory)
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
+Melakukan modifikasi kernel xv6 untuk mengimplementasikan:
 
-* **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
+  * Copy-on-Write Fork (CoW): Optimalisasi fork agar tidak langsung menyalin seluruh memori, melainkan hanya menyalin saat halaman diubah (write).
+
+  * Shared Memory: Menambahkan syscall `shmget()` dan `shmrelease()` agar dua proses dapat berbagi satu halaman memori, mirip dengan System V Shared Memory.
+
 ---
 
 ## 🛠️ Rincian Implementasi
 
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
+  ## Copy-on-Write (CoW)
+  
+* Menambahkan array `ref_count[]` dan fungsi `incref()` / `decref()` di `vm.c`
 
-### Contoh untuk Modul 1:
+* Menambahkan flag `PTE_COW` di `mmu.h` untuk menandai halaman CoW
 
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
+* Membuat fungsi `cowuvm()` di `vm.c` sebagai pengganti `copyuvm()`
+
+* Mengubah `fork()` di `proc.c` agar menggunakan `cowuvm()`
+
+* Menangani page fault dengan memeriksa `PTE_COW` di `trap.c`
+
+* Mengubah semua `kalloc()`/ `kfree()` agar menggunakan reference counting yang sesuai
+
+  ## Shared Memory ala System V
+  
+* Menambahkan struktur global `shmtab[]` di `vm.c` untuk menyimpan shared memory (maks. 16 entri)
+
+* Membuat syscall `sys_shmget()` dan `sys_shmrelease()` di `sysproc.c`
+
+* Menambahkan `syscall` number baru di `syscall.h`
+
+* Menambahkan deklarasi syscall di `user.h` dan `usys.S`
+
 ---
 
 ## ✅ Uji Fungsionalitas
 
-Tuliskan program uji apa saja yang Anda gunakan, misalnya:
-
-* `ptest`: untuk menguji `getpinfo()`
-* `rtest`: untuk menguji `getReadCount()`
-* `cowtest`: untuk menguji fork dengan Copy-on-Write
-* `shmtest`: untuk menguji `shmget()` dan `shmrelease()`
-* `chmodtest`: untuk memastikan file `read-only` tidak bisa ditulis
-* `audit`: untuk melihat isi log system call (jika dijalankan oleh PID 1)
+`cowtest`	Menguji fork() dengan teknik Copy-on-Write
+`shmtest`	Menguji shmget() dan shmrelease() antar proses
 
 ---
 
@@ -47,41 +61,40 @@ Tuliskan program uji apa saja yang Anda gunakan, misalnya:
 
 Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
 
-### 📍 Contoh Output `cowtest`:
+### 📍 Output `cowtest`:
 
 ```
 Child sees: Y
 Parent sees: X
 ```
 
-### 📍 Contoh Output `shmtest`:
+### 📍 Output `shmtest`:
 
 ```
 Child reads: A
 Parent reads: B
 ```
+Hasil Screenshoot (Output `cowtest`) :
 
-### 📍 Contoh Output `chmodtest`:
-
-```
-Write blocked as expected
-```
-
-Jika ada screenshot:
+<img width="1478" height="540" alt="modul3a" src="https://github.com/user-attachments/assets/bbfaf676-cf9c-4971-b0cc-c58349ec787f" />
 
 ```
-![hasil cowtest](./screenshots/cowtest_output.png)
-```
+Hasil Screenshoot (Output `shmtest`) :
 
----
+<img width="1471" height="723" alt="modul3b (2)" src="https://github.com/user-attachments/assets/050ac905-4db0-4b4a-b87e-1aeee156838f" />
+
+```
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
+  * Salah implementasi penanganan page fault menyebabkan panic kernel saat `fork()`
 
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+  * Lupa menghapus flag `PTE_COW` saat membuat salinan halaman menyebabkan infinite fault loop
+
+  * Kesalahan pemetaan `shmget()` ke USERTOP menyebabkan proses menimpa stack
+
+  * Refcount tidak dikurangi pada `exit()`, menyebabkan kebocoran memori (memory leak)
+
 
 ---
 
