@@ -1,16 +1,19 @@
 # 📝 Laporan Tugas Akhir
 
 **Mata Kuliah**: Sistem Operasi
+
 **Semester**: Genap / Tahun Ajaran 2024–2025
+
 **Nama**: Ismi Nur Fadilah
+
 **NIM**: 240202868
+
 **Modul yang Dikerjakan**: Modul 5 – Audit dan Keamanan Sistem
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Modul 5 – Audit dan Keamanan Sistem:
 Melakukan perluasan terhadap kernel xv6 untuk merekam setiap system call yang dijalankan oleh proses, serta menyediakan system call `get_audit_log()` yang memungkinkan proses dengan PID 1 untuk membaca log system call tersebut.
 
 ---
