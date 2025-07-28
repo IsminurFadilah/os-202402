@@ -8,33 +8,33 @@
 
 **NIM**: 240202868
 
-**Modul yang Dikerjakan**:  Modul 1 – System Call dan Instrumentasi Kernel
+**Modul yang Dikerjakan**:  Modul 2 – Penjadwalan CPU Lanjutan
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Pada modul ini saya menambahkan dua buah system call baru ke dalam kernel xv6:
-
- * getpinfo(): untuk mengambil daftar proses aktif beserta informasi seperti PID, ukuran memori, dan nama proses.
-
- * getreadcount(): untuk menghitung jumlah pemanggilan fungsi read() sejak sistem boot.
-
-Modul ini bertujuan agar mahasiswa memahami cara menambahkan system call, mengakses informasi kernel, dan membuat instrumen pengujian sendiri.
+Modul ini berfokus pada modifikasi algoritma penjadwalan CPU pada kernel xv6. Penjadwal default Round Robin diganti dengan Priority Scheduling (Non-Preemptive). Mahasiswa menambahkan atribut prioritas pada proses dan mengimplementasikan system call set_priority(int priority) yang memungkinkan proses mengatur prioritasnya. Proses dengan prioritas tertinggi (angka lebih kecil) dipilih lebih dulu oleh scheduler.
 
 ---
 
 ## 🛠️ Rincian Implementasi
 
-  * Menambahkan dua system call baru di file sysproc.c dan mendaftarkannya di syscall.c
+  * Menambahkan field int priority ke dalam struktur proc di proc.h
 
-  * Menambahkan entri syscall baru di syscall.h, user.h, dan usys.S
+  * Menginisialisasi priority dengan nilai default (misal 60) di allocproc() (proc.c)
 
-  * Membuat struktur struct pinfo di proc.h untuk menyimpan informasi proses
+  * Menambahkan system call set_priority():
 
-  * Menambahkan variabel global readcount di kernel dan menginkrementasinya di sys_read() (sysfile.c)
+      * Tambah deklarasi di user.h dan syscall.h
 
-  * Membuat dua program uji user-level: ptest.c untuk getpinfo() dan rtest.c untuk getreadcount()
+      * Tambah entri syscall di usys.S dan syscall.c
+
+      * Implementasi fungsi sys_set_priority() di sysproc.c
+
+  * Memodifikasi fungsi scheduler() di proc.c agar memilih proses RUNNABLE dengan prioritas tertinggi
+
+  * Menyusun program uji user-level (prio_test.c) untuk menunjukkan bahwa proses dengan prioritas lebih tinggi dijalankan lebih awal
 
 ---
 
@@ -42,9 +42,7 @@ Modul ini bertujuan agar mahasiswa memahami cara menambahkan system call, mengak
 
 Program uji yang digunakan:
 
-  * ptest: untuk menguji getpinfo() — menampilkan informasi proses yang sedang berjalan
-
-  * rtest: untuk menguji getreadcount() — menampilkan jumlah pemanggilan fungsi read() sebelum dan sesudah input stdin
+  * prio_test: menguji set_priority() dan membuktikan bahwa proses dengan prioritas lebih tinggi dieksekusi terlebih dahulu
 
 ---
 
@@ -69,9 +67,13 @@ $
 
 Tuliskan kendala (jika ada), misalnya:
 
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+  * Salah dalam memodifikasi scheduler() menyebabkan kernel tidak menjadwalkan proses apapun (infinite loop)
+
+  * Lupa menambahkan validasi nilai prioritas pada system call set_priority() (harus 0–100)
+
+  * set_priority() bekerja tetapi tidak berdampak karena prioritas tidak digunakan dalam scheduler() secara benar
+
+  * Kesulitan membedakan kapan proses dianggap RUNNABLE atau sedang menunggu, menyebabkan pemilihan proses tidak akurat
 
 ---
 
