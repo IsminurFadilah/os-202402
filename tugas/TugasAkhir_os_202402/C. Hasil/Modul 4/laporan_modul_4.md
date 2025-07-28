@@ -1,34 +1,60 @@
 # 📝 Laporan Tugas Akhir
 
 **Mata Kuliah**: Sistem Operasi
+
 **Semester**: Genap / Tahun Ajaran 2024–2025
-**Nama**: `<Nama Lengkap>`
-**NIM**: `<Nomor Induk Mahasiswa>`
-**Modul yang Dikerjakan**:
-`(Contoh: Modul 1 – System Call dan Instrumentasi Kernel)`
+
+**Nama**: Ismi Nur Fadilah
+
+**NIM**: 240202868
+
+**Modul yang Dikerjakan**: Modul 4 – Subsistem Kernel Alternatif `(chmod()` `syscall` dan `/dev/random` device)
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
+## Pada modul ini dilakukan dua modifikasi besar terhadap kernel xv6, yaitu:
 
-* **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
+* Menambahkan `system call` `chmod(path, mode)` untuk mengatur mode file menjadi read-only atau read-write.
+
+* Menambahkan driver pseudo-device `/dev/random` yang menyediakan byte acak ketika dibaca.
+* 
 ---
 
 ## 🛠️ Rincian Implementasi
 
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
+## System Call chmod(path, mode)
 
-### Contoh untuk Modul 1:
+  * Menambahkan field `short mode` pada `struct inode@ di `fs.h`, tanpa menyimpan ke disk (hanya di memori).
 
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
----
+  * Menambahkan `syscall sys_chmod()` di `sysfile.c`, menggunakan `ilock()` dan `iunlock()` untuk mengubah `inode->mode`.
+
+  * Menambahkan definisi `syscall chmod` di:
+
+    * `syscall.h` → `#define SYS_chmod 27`
+
+    * `user.h` → `int chmod(char *path, int mode);`
+
+    * `usys.S` → `SYSCALL(chmod)`
+
+    * `syscall.c` → `extern int sys_chmod(void);` dan mapping pada `syscalls[]`
+
+  * Memodifikasi `file.c`, tepatnya fungsi `filewrite()` agar menolak write jika `inode->mode == 1` (read-only)
+
+## Device Driver /dev/random
+
+  * Membuat file baru `random.c` berisi fungsi `randomread()` untuk menghasilkan byte acak menggunakan LCG (Linear Congruential Generator)
+
+  * Mendaftarkan device di `file.c:`
+
+    * Tambahkan deklarasi `extern int randomread(...)`
+
+    * Tambahkan entri di array devsw[]: [3] = { randomread, 0 }
+
+  * Menambahkan pemanggilan `mknod("/dev/random", 1, 3);` di `init.c` untuk membuat device node `/dev/random`
+
+  * Menambahkan `random.c` ke dalam build xv6
 
 ## ✅ Uji Fungsionalitas
 
@@ -45,43 +71,39 @@ Tuliskan program uji apa saja yang Anda gunakan, misalnya:
 
 ## 📷 Hasil Uji
 
-Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
+`chmodtest`	Menguji system call chmod()
 
-### 📍 Contoh Output `cowtest`:
+`randomtest`	Membaca data acak dari /dev/random
 
-```
-Child sees: Y
-Parent sees: X
-```
-
-### 📍 Contoh Output `shmtest`:
-
-```
-Child reads: A
-Parent reads: B
-```
-
-### 📍 Contoh Output `chmodtest`:
+### 📍 Output `chmodtest`:
 
 ```
 Write blocked as expected
 ```
+Hasil Screenshoot:
 
-Jika ada screenshot:
+<img width="966" height="747" alt="modul4_" src="https://github.com/user-attachments/assets/e478e693-872d-4130-96ef-39eab1f31e97" />
 
+### 📍Output randomtest:
 ```
-![hasil cowtest](./screenshots/cowtest_output.png)
+159 114 41 116 67 198 109 232 
 ```
 
----
+Hasil Screenshoot:
+
+<img width="1452" height="554" alt="modul4__" src="https://github.com/user-attachments/assets/58bb1d1a-85e8-4942-a2a1-d7b11ae2d221" />
+
 
 ## ⚠️ Kendala yang Dihadapi
 
-Tuliskan kendala (jika ada), misalnya:
+  * Salah index di array `devsw[]` menyebabkan error saat mengakses `/dev/random`
 
-* Salah implementasi `page fault` menyebabkan panic
-* Salah memetakan alamat shared memory ke USERTOP
-* Proses biasa bisa akses audit log (belum ada validasi PID)
+  * Lupa mengatur mode file pada inode menyebabkan `chmod` tidak berfungsi
+
+  * `filewrite()` masih bisa menulis jika tidak dicegah eksplisit di `file.c`
+
+  * Masalah saat `mknod()` dipanggil terlalu awal sebelum sistem file siap
+
 
 ---
 
