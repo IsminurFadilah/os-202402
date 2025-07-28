@@ -16,6 +16,7 @@ Modul 1 – System Call dan Instrumentasi Kernel
 ## 📌 Deskripsi Singkat Tugas
 
 * **Modul 1 – System Call dan Instrumentasi Kernel**:
+* 
   Pada Modul 1 ini, diminta untuk memodifikasi kernel xv6-public dengan menambahkan dua buah system call baru, yaitu:
 
 getpinfo(struct pinfo *ptable)
@@ -28,59 +29,34 @@ Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan sys
 
 ## 🛠️ Rincian Implementasi
 
-Tuliskan secara ringkas namun jelas apa yang Anda lakukan:
+* Menambahkan dua system call baru (getpinfo dan getreadcount) di file sysproc.c dan mendaftarkannya di syscall.c
 
-### Contoh untuk Modul 1:
+* Menambahkan nomor syscall di syscall.h, serta deklarasinya di user.h dan usys.S
 
-* Menambahkan dua system call baru di file `sysproc.c` dan `syscall.c`
-* Mengedit `user.h`, `usys.S`, dan `syscall.h` untuk mendaftarkan syscall
-* Menambahkan struktur `struct pinfo` di `proc.h`
-* Menambahkan counter `readcount` di kernel
-* Membuat dua program uji: `ptest.c` dan `rtest.c`
+* Membuat struktur struct pinfo di proc.h untuk menyimpan info proses aktif
+
+* Menambahkan variabel global readcount di sysproc.c dan menginkrementasinya di fungsi sys_read() (sysfile.c)
+
+* Membuat dua program uji user-level: ptest.c untuk getpinfo dan rtest.c untuk getreadcount
+
 ---
 
 ## ✅ Uji Fungsionalitas
 
-Tuliskan program uji apa saja yang Anda gunakan, misalnya:
+Program uji yang digunakan pada Modul 1:
 
-* `ptest`: untuk menguji `getpinfo()`
-* `rtest`: untuk menguji `getReadCount()`
-* `cowtest`: untuk menguji fork dengan Copy-on-Write
-* `shmtest`: untuk menguji `shmget()` dan `shmrelease()`
-* `chmodtest`: untuk memastikan file `read-only` tidak bisa ditulis
-* `audit`: untuk melihat isi log system call (jika dijalankan oleh PID 1)
+* ptest → untuk menguji system call getpinfo(), menampilkan daftar proses aktif beserta PID, ukuran memori, dan nama proses.
+
+* rtest → untuk menguji system call getreadcount(), memastikan jumlah pemanggilan read() bertambah setelah melakukan input dari stdin.
 
 ---
 
 ## 📷 Hasil Uji
 
-Lampirkan hasil uji berupa screenshot atau output terminal. Contoh:
+Output modul 1
 
-### 📍 Contoh Output `cowtest`:
+<img width="831" height="541" alt="modul1" src="https://github.com/user-attachments/assets/a03466ba-aa16-4b2c-9c62-b6e0261f3ee0" />
 
-```
-Child sees: Y
-Parent sees: X
-```
-
-### 📍 Contoh Output `shmtest`:
-
-```
-Child reads: A
-Parent reads: B
-```
-
-### 📍 Contoh Output `chmodtest`:
-
-```
-Write blocked as expected
-```
-
-Jika ada screenshot:
-
-```
-![hasil cowtest](./screenshots/cowtest_output.png)
-```
 
 ---
 
