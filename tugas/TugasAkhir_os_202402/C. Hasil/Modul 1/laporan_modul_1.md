@@ -9,16 +9,22 @@
 **NIM**: 240202868
 
 **Modul yang Dikerjakan**:
-`( Modul 1 – System Call dan Instrumentasi Kernel)`
+Modul 1 – System Call dan Instrumentasi Kernel
 
 ---
 
 ## 📌 Deskripsi Singkat Tugas
 
-Tuliskan deskripsi singkat dari modul yang Anda kerjakan. Misalnya:
-
 * **Modul 1 – System Call dan Instrumentasi Kernel**:
-  Menambahkan dua system call baru, yaitu `getpinfo()` untuk melihat proses yang aktif dan `getReadCount()` untuk menghitung jumlah pemanggilan `read()` sejak boot.
+  Pada Modul 1 ini, diminta untuk memodifikasi kernel xv6-public dengan menambahkan dua buah system call baru, yaitu:
+
+getpinfo(struct pinfo *ptable)
+→ Mengembalikan informasi proses yang sedang aktif, termasuk PID, ukuran memori, dan nama proses.
+
+getreadcount()
+→ Mengembalikan total jumlah pemanggilan fungsi read() sejak sistem boot.
+
+Tugas ini melatih pemahaman mahasiswa dalam memodifikasi kernel, menambahkan system call, serta mengakses dan memanipulasi informasi proses di tingkat kernel. Selain itu, mahasiswa juga diminta membuat program uji pada level user untuk menguji kedua system call yang telah dibuat.
 ---
 
 ## 🛠️ Rincian Implementasi
