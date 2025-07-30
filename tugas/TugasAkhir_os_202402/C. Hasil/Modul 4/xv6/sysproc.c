@@ -89,12 +89,3 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
-
-int sys_set_priority(void) {
-  int prio;
-  if (argint(0, &prio) < 0 || prio < 0 || prio > 100)
-    return -1;
-
-  myproc()->priority = prio;
-  return 0;
-}

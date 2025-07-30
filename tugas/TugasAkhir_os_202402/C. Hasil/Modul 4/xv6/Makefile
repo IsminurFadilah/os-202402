@@ -1,6 +1,7 @@
 OBJS = \
 	bio.o\
 	console.o\
+	random.o \
 	exec.o\
 	file.o\
 	fs.o\
@@ -181,8 +182,9 @@ UPROGS=\
 	_usertests\
 	_wc\
 	_zombie\
-	_ptest\
-	
+	_chmodtest\
+	_randomtest\
+
 fs.img: mkfs README $(UPROGS)
 	./mkfs fs.img README $(UPROGS)
 
@@ -194,7 +196,7 @@ clean:
 	initcode initcode.out kernel xv6.img fs.img kernelmemfs \
 	xv6memfs.img mkfs .gdbinit \
 	$(UPROGS)
-
+	
 # make a printout
 FILES = $(shell grep -v '^\#' runoff.list)
 PRINT = runoff.list runoff.spec README toc.hdr toc.ftr $(FILES)
